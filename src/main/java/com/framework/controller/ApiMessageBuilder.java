@@ -195,9 +195,6 @@ public class ApiMessageBuilder {
                     field.set(msg, Boolean.valueOf(paramObj.toString()));
                     break;
                 case DATE:
-                    // This piece of code is for maintaining backward compatibility
-                    // and support both the date formats(Bug 9724)
-                    // Do the date messaging for ListEventsCmd only
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     format.setLenient(false);
                     synchronized (format) {
@@ -205,21 +202,11 @@ public class ApiMessageBuilder {
                     }
                     break;
                 case FLOAT:
-                    // Assuming that the parameters have been checked for required
-                    // before now,
-                    // we ignore blank or null values and defer to the command to
-                    // set a default
-                    // value for optional parameters ...
                     if (paramObj != null && isNotBlank(paramObj.toString())) {
                         field.set(msg, Float.valueOf(paramObj.toString()));
                     }
                     break;
                 case INTEGER:
-                    // Assuming that the parameters have been checked for required
-                    // before now,
-                    // we ignore blank or null values and defer to the command to
-                    // set a default
-                    // value for optional parameters ...
                     if (paramObj != null && isNotBlank(paramObj.toString())) {
                         field.set(msg, Integer.valueOf(paramObj.toString()));
                     }
@@ -233,14 +220,6 @@ public class ApiMessageBuilder {
                         switch (listType) {
                             case INTEGER:
                                 listParam.add(Integer.valueOf(token));
-                                break;
-                            case UUID:
-                                // TODO:not use
-                                // if (token.isEmpty())
-                                // break;
-                                // Long internalId = translateUuidToInternalId(token,
-                                // annotation);
-                                // listParam.add(internalId);
                                 break;
                             case LONG: {
                                 listParam.add(Long.valueOf(token));
@@ -256,14 +235,6 @@ public class ApiMessageBuilder {
                         }
                     }
                     field.set(msg, listParam);
-                    break;
-                case UUID:
-                    // if (paramObj.toString().isEmpty())
-                    // break;
-                    // Long internalId = translateUuidToInternalId(
-                    // paramObj.toString(), annotation);
-                    // field.set(msg, internalId);
-                    // NOW do not use UUID
                     break;
                 case LONG:
                     field.set(msg, Long.valueOf(paramObj.toString()));
