@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.framework.resourcemanager;
 
 import java.io.IOException;
@@ -18,10 +35,6 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     private RMContext rmContext;
 
     private static String identification = null;
-    private static String url = null;
-    private static String userName = null;
-    private static String password = null;
-    public static Integer port = null;
 
     public ResourceManager() {
         super(ServiceType.ResourceManager.toString(), null);
@@ -30,10 +43,6 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     public ResourceManager(String _identification, String _url, String _userName, String _password) {
         super(ServiceType.ResourceManager.toString(), null);
         identification = _identification;
-        url = _url;
-        userName = _userName;
-        password = _password;
-        port = Integer.valueOf(_identification);
     }
 
     @Override
@@ -63,17 +72,6 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     }
 
     public static void main(String argv[]) throws IOException {
-
-        if (argv.length != 4) {
-            logger.error("Expected --_identification, --url, --username, --password arguments. shutdown service.");
-            System.exit(1);
-        }
-
-        identification = argv[0];
-        url = argv[1];
-        userName = argv[2];
-        password = argv[3];
-        port = Integer.valueOf(identification);
 
         try {
             Configuration conf = new Configuration();
