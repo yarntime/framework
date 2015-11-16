@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.framework.task;
 
 import org.apache.log4j.Logger;
@@ -47,14 +64,12 @@ public class TaskBase implements Task {
         return taskState;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Object handle(TaskMsg message) {
         this.msgUUID = message.getMsgUUID();
         this.processor = message.getProcessor();
         this.taskCallback = message.getTaskCallback();
         this.taskState = TaskState.Processing;
-        EventMsg eventMsg = message.getEventMsg();
 
         try {
             this.processor.process();
@@ -63,16 +78,8 @@ public class TaskBase implements Task {
             logger.error("failed to process task " + this.getMsgUUID() + " cause by "
                     + e.getMessage());
             this.taskCallback.error(e.getMessage());
-            eventMsg.getResponse().setSuccess(false);
-            eventMsg.getResponse().setCause(e.getMessage());
         }
         this.taskState = TaskState.Finish;
-
-        rmContext.getDispatcher().getMessageHandler().handle(eventMsg);
-
-        if (eventMsg.getResponse().isSuccess()) {
-            this.processor.afterDone();
-        }
 
         return this;
     }
