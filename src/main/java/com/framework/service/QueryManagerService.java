@@ -22,15 +22,14 @@ import java.util.List;
 
 import com.framework.exception.UnknownMessageException;
 import com.framework.message.QueryMessage;
-import com.framework.resourcemanager.RMContext;
 import com.framework.response.BaseListResponse;
 import com.framework.response.BaseResponse;
 import com.framework.response.ResponseObject;
 
 public abstract class QueryManagerService extends ComponentService {
 
-    public QueryManagerService(String name, RMContext _rmContext) {
-        super(name, _rmContext);
+    public QueryManagerService(String name) {
+        super(name);
     }
 
     protected Object handleQueryMsg(QueryMessage message) {

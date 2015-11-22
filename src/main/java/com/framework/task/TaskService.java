@@ -18,13 +18,13 @@
 package com.framework.task;
 
 import com.framework.message.MessageHandler;
-import com.framework.resourcemanager.RMContext;
 import com.framework.service.ComponentService;
+import com.framework.service.ServiceType;
 
 public abstract class TaskService extends ComponentService implements MessageHandler<TaskMsg> {
 
-    public TaskService(RMContext _rmContext) {
-        super("TaskService", _rmContext);
+    public TaskService() {
+        super(ServiceType.TaskManager.toString());
     }
 
     @Override

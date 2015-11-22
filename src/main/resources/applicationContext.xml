@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="taskService" class="com.framework.task.TaskManager" />
+	
+	<bean id="apiService" class="com.framework.controller.ApiManager" />
+
+	<bean id="resourceManagerService" class="com.framework.resourcemanager.ResourceManager">
+		<property name="serviceList">
+			<list>
+				<ref bean="taskService" />
+				<ref bean="apiService"/>
+			</list>
+		</property>
+	</bean>
+</beans>

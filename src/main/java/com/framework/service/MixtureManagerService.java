@@ -23,15 +23,14 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.framework.exception.UnknownMessageException;
 import com.framework.message.QueryMessage;
-import com.framework.resourcemanager.RMContext;
 import com.framework.response.BaseListResponse;
 import com.framework.response.BaseResponse;
 import com.framework.response.ResponseObject;
 
 public abstract class MixtureManagerService extends ComponentService {
 
-    public MixtureManagerService(String name, RMContext _rmContext) {
-        super(name, _rmContext);
+    public MixtureManagerService(String name) {
+        super(name);
     }
 
     public abstract ConcurrentMap<String, ? extends ResponseObject> getManagedInstances();

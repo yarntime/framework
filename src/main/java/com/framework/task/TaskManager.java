@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 
 import com.framework.message.DispatcherType;
 import com.framework.message.MessageHandler;
-import com.framework.resourcemanager.RMContext;
 import com.framework.utils.Configuration;
 import com.framework.utils.NamedThreadFactory;
 
@@ -37,9 +36,9 @@ public class TaskManager extends TaskService {
     ConcurrentMap<String, Task> tasks = new ConcurrentSkipListMap<String, Task>();
 
     private ExecutorService poolExecutor;
-
-    public TaskManager(RMContext _rmContext) {
-        super(_rmContext);
+    
+    public TaskManager() {
+        super();
     }
 
     @Override
@@ -62,7 +61,7 @@ public class TaskManager extends TaskService {
 
         @Override
         public Object handle(TaskMsg message) {
-            Task task = new TaskBase(rmContext);
+            Task task = new TaskBase();
             tasks.put(message.getMsgUUID(), task);
             poolExecutor.execute(new TaskExecutor(task, message));
             return task;

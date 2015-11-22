@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{3}:%L] (%t:%x) %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="framework" class="org.apache.log4j.rolling.RollingFileAppender">
+		<param name="Append" value="true" />
+		<param name="Threshold" value="TRACE" />
+		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+			<param name="FileNamePattern"
+				value="logs/framework.log.%d{yyyy-MM-dd}.gz" />
+			<param name="ActiveFileName" value="logs/framework.log" />
+		</rollingPolicy>
+		<layout class="org.apache.log4j.EnhancedPatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{3}:%L] (%t:%x) %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- Application Loggers -->
+	<logger name="com.framework">
+		<level value="DEBUG"/>
+		<appender-ref ref="framework"/>
+		
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>

@@ -15,27 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.framework.resourcemanager;
+package com.framework.utils.rmcontext;
 
 import com.framework.message.Dispatcher;
 
-public class RMContextImpl implements RMContext {
+public class RMContext {
 
-    private Dispatcher dispatcher;
+    private static Dispatcher dispatcher;
+    
+    private static String indentification;
 
-    @Override
-    public void setDispatcher(Dispatcher dispatcher) {
-        this.dispatcher = dispatcher;
+    public static void setDispatcher(Dispatcher _dispatcher) {
+        dispatcher = _dispatcher;
     }
 
-    @Override
-    public Dispatcher getDispatcher() {
+    public static Dispatcher getDispatcher() {
         return dispatcher;
     }
+    
+    public static void setIdentification(String _indentification) {
+        indentification = _indentification;
+    }
 
-    @Override
-    public String getIdentification() {
-        return null;
+    public static String getIdentification() {
+        return indentification;
     }
 
 }

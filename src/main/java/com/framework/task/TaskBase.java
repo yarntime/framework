@@ -19,21 +19,17 @@ package com.framework.task;
 
 import org.apache.log4j.Logger;
 
-import com.framework.resourcemanager.RMContext;
-
 public class TaskBase implements Task {
 
     private static Logger logger = Logger.getLogger(TaskBase.class);
-
-    private RMContext rmContext;
+    
     private TaskProcessor processor;
+    
     private TaskCallBack taskCallback;
+    
     private String msgUUID;
+    
     private TaskState taskState = TaskState.Waiting;
-
-    public TaskBase(RMContext _rmContext) {
-        this.rmContext = _rmContext;
-    }
 
     public TaskProcessor getTaskProcessor() {
         return processor;

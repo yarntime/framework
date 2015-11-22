@@ -18,5 +18,5 @@
 package com.framework.service;
 
 public enum ServiceType {
-    ResourceManager
+    ResourceManager, ApiManager, TaskManager
 }
