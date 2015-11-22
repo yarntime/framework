@@ -68,13 +68,13 @@ import com.framework.exception.HttpRequestException;
 import com.framework.message.DispatcherType;
 import com.framework.message.Message;
 import com.framework.message.MessageBuilder;
-import com.framework.resourcemanager.RMContext;
-import com.framework.resourcemanager.ResourceManager;
 import com.framework.response.BaseResponse;
 import com.framework.response.ExceptionResponse;
 import com.framework.service.ComponentService;
+import com.framework.service.ServiceType;
 import com.framework.utils.Configuration;
 import com.framework.utils.NamedThreadFactory;
+import com.framework.utils.rmcontext.RMContext;
 
 public class ApiManager extends ComponentService implements HttpRequestHandler {
 
@@ -92,9 +92,9 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
             new HashMap<String, Class<? extends Message>>();
 
     private static Thread listenerThread = null;
-
-    public ApiManager(RMContext _rmContext) {
-        super("ApiServer", _rmContext);
+    
+    public ApiManager() {
+        super(ServiceType.ApiManager.toString());
     }
 
     @Override
@@ -166,7 +166,7 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
 
             // Set up request handlers
             HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
-            reqistry.register("/vmwaredriver*", requestHandler);
+            reqistry.register("/api*", requestHandler);
 
             // Set up the HTTP service
             httpService =
@@ -317,7 +317,7 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
     @SuppressWarnings("unchecked")
     private Object handleMessage(Message message, String action) throws BaseException {
         BaseResponse result =
-                (BaseResponse) this.rmContext.getDispatcher().getMessageHandler().handle(message);
+                (BaseResponse) RMContext.getDispatcher().getMessageHandler().handle(message);
         return MessageBuilder.dumpResponse(result, action);
     }
 

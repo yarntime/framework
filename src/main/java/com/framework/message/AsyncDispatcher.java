@@ -37,17 +37,11 @@ public class AsyncDispatcher extends AbstractService implements Dispatcher {
     private final BlockingQueue<Message> messageQueue;
     private volatile boolean stopped = false;
 
-    // Configuration flag for enabling/disabling draining dispatcher's events on
-    // stop functionality.
     private volatile boolean drainMessagesOnStop = false;
 
-    // Indicates all the remaining dispatcher's events on stop have been drained
-    // and processed.
     private volatile boolean drained = true;
     private Object waitForDrained = new Object();
 
-    // For drainEventsOnStop enabled only, block newly coming events into the
-    // queue while stopping.
     private volatile boolean blockNewEvents = false;
     private MessageHandler handlerInstance = null;
 
@@ -71,12 +65,6 @@ public class AsyncDispatcher extends AbstractService implements Dispatcher {
             public void run() {
                 while (!stopped && !Thread.currentThread().isInterrupted()) {
                     drained = messageQueue.isEmpty();
-                    // blockNewEvents is only set when dispatcher is draining to
-                    // stop,
-                    // adding this check is to avoid the overhead of acquiring
-                    // the lock
-                    // and calling notify every time in the normal run of the
-                    // loop.
                     if (blockNewEvents) {
                         synchronized (waitForDrained) {
                             if (drained) {
@@ -107,10 +95,6 @@ public class AsyncDispatcher extends AbstractService implements Dispatcher {
     @Override
     protected void serviceInit(Configuration conf) throws Exception {
         this.exitOnDispatchException = false;
-        /*
-         * conf.getBoolean(Dispatcher.DISPATCHER_EXIT_ON_ERROR_KEY,
-         * Dispatcher.DEFAULT_DISPATCHER_EXIT_ON_ERROR);
-         */
         super.serviceInit(conf);
     }
 

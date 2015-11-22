@@ -32,10 +32,18 @@ public class CompositeService extends AbstractService {
 
     protected static final boolean STOP_ONLY_STARTED_SERVICES = false;
 
-    private final List<Service> serviceList = new ArrayList<Service>();
+    private List<Service> serviceList = new ArrayList<Service>();
 
     public CompositeService(String name) {
         super(name);
+    }
+
+    public List<Service> getServiceList() {
+        return serviceList;
+    }
+
+    public void setServiceList(List<Service> serviceList) {
+        this.serviceList = serviceList;
     }
 
     public List<Service> getServices() {

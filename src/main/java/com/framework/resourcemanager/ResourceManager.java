@@ -20,29 +20,24 @@ package com.framework.resourcemanager;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.framework.controller.ApiManager;
 import com.framework.message.DispatcherType;
 import com.framework.message.MessageHandler;
 import com.framework.service.ComponentService;
 import com.framework.service.ServiceType;
 import com.framework.utils.Configuration;
+import com.framework.utils.rmcontext.RMContext;
 
 public class ResourceManager extends ComponentService implements MessageHandler<ServiceMsg> {
 
     private static Logger logger = Logger.getLogger(ResourceManager.class);
 
-    private RMContext rmContext;
-
     private static String identification = null;
 
     public ResourceManager() {
-        super(ServiceType.ResourceManager.toString(), null);
-    }
-
-    public ResourceManager(String _identification, String _url, String _userName, String _password) {
-        super(ServiceType.ResourceManager.toString(), null);
-        identification = _identification;
+        super(ServiceType.ResourceManager.toString());
     }
 
     @Override
@@ -50,13 +45,11 @@ public class ResourceManager extends ComponentService implements MessageHandler<
 
         logger.info("initing service " + this.getName() + " ...");
 
-        this.rmContext = new RMContextImpl();
-
         super.serviceInit(conf);
 
         registeDispatcher(this.dispatcher);
 
-        rmContext.setDispatcher(this.dispatcher);
+        RMContext.setDispatcher(this.dispatcher);
     }
 
     @Override
@@ -73,10 +66,15 @@ public class ResourceManager extends ComponentService implements MessageHandler<
 
     public static void main(String argv[]) throws IOException {
 
+        identification = "identification";
+         
+        logger.info("resource manager is starting  with  identification " + identification + " ...");
         try {
+            ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+            
             Configuration conf = new Configuration();
 
-            ResourceManager resourceManager = new ResourceManager();
+            ResourceManager resourceManager = (ResourceManager) ctx.getBean("resourceManagerService");
 
             resourceManager.init(conf);
             resourceManager.start();

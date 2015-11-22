@@ -26,14 +26,11 @@ import com.framework.message.Dispatcher;
 import com.framework.message.DispatcherType;
 import com.framework.message.MessageHandler;
 import com.framework.message.SyncDispatcher;
-import com.framework.resourcemanager.RMContext;
 import com.framework.utils.Configuration;
 
 public abstract class ComponentService extends CompositeService {
 
     private static Logger logger = Logger.getLogger(ComponentService.class);
-
-    protected RMContext rmContext;
 
     protected Dispatcher dispatcher;
 
@@ -44,9 +41,8 @@ public abstract class ComponentService extends CompositeService {
         super.serviceInit(conf);
     }
 
-    public ComponentService(String name, RMContext _rmContext) {
+    public ComponentService(String name) {
         super(name);
-        this.rmContext = _rmContext;
     }
 
     public abstract Class<?> getMessageType();
