@@ -15,4 +15,12 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="actionToMsg" class="com.framework.controller.ApiManager">
+	    <property name="messageClazzMap">
+		    <map>  
+                <entry key="queryServices" value="com.framework.resourcemanager.msg.QueryServiceMsg"/>  
+            </map>
+        </property>
+	</bean>
 </beans>

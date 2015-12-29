@@ -23,8 +23,10 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.framework.controller.ApiManager;
 import com.framework.message.DispatcherType;
 import com.framework.message.MessageHandler;
+import com.framework.resourcemanager.msg.QueryServiceMsg;
 import com.framework.service.ComponentService;
 import com.framework.service.ServiceType;
 import com.framework.utils.Configuration;
@@ -44,7 +46,9 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     protected void serviceInit(Configuration conf) throws Exception {
 
         logger.info("initing service " + this.getName() + " ...");
-
+        
+        addService(new ApiManager());
+        
         super.serviceInit(conf);
 
         registeDispatcher(this.dispatcher);
@@ -97,6 +101,9 @@ public class ResourceManager extends ComponentService implements MessageHandler<
 
     @Override
     public Object handle(ServiceMsg message) {
+        if (message instanceof QueryServiceMsg) {
+            return "ApiService";
+        }
         return null;
     }
 }

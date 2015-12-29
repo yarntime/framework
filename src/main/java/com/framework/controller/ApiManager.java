@@ -178,7 +178,7 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
 
         @Override
         public void run() {
-            logger.info("ApiServer listening on port " + serverSocket.getLocalPort());
+            logger.info("ApiServer listening on port " + apiPort);
             while (!Thread.interrupted()) {
                 try {
                     // Set up HTTP connection
@@ -338,5 +338,13 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
         } catch (Exception ex) {
             logger.error("error!", ex);
         }
+    }
+
+    public static Map<String, Class<? extends Message>> getMessageClazzMap() {
+        return messageClazzMap;
+    }
+
+    public static void setMessageClazzMap(Map<String, Class<? extends Message>> messageClazzMap) {
+        ApiManager.messageClazzMap = messageClazzMap;
     }
 }
