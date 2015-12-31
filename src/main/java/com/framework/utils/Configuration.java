@@ -25,6 +25,6 @@ public class Configuration {
 
     public int API_THREAD_KEEP_ALIVE_TIME = 60;
 
-    public int API_PORT = 18777;
+    public String API_PORT = "8080";
 
 }

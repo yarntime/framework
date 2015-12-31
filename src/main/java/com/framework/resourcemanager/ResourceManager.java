@@ -18,16 +18,23 @@
 package com.framework.resourcemanager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.framework.controller.ApiManager;
+import com.framework.message.Dispatcher;
 import com.framework.message.DispatcherType;
 import com.framework.message.MessageHandler;
 import com.framework.resourcemanager.msg.QueryServiceMsg;
+import com.framework.response.BaseListResponse;
+import com.framework.response.ResponseObject;
 import com.framework.service.ComponentService;
+import com.framework.service.CompositeService;
+import com.framework.service.Service;
+import com.framework.service.ServiceResponse;
 import com.framework.service.ServiceType;
 import com.framework.utils.Configuration;
 import com.framework.utils.rmcontext.RMContext;
@@ -37,6 +44,7 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     private static Logger logger = Logger.getLogger(ResourceManager.class);
 
     private static String identification = null;
+    private static final int TOP_LEVEL = 1;
 
     public ResourceManager() {
         super(ServiceType.ResourceManager.toString());
@@ -46,8 +54,6 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     protected void serviceInit(Configuration conf) throws Exception {
 
         logger.info("initing service " + this.getName() + " ...");
-        
-        addService(new ApiManager());
         
         super.serviceInit(conf);
 
@@ -101,9 +107,26 @@ public class ResourceManager extends ComponentService implements MessageHandler<
 
     @Override
     public Object handle(ServiceMsg message) {
+
         if (message instanceof QueryServiceMsg) {
-            return "ApiService";
+            List<ResponseObject> response = new ArrayList<ResponseObject>();
+            addServices(TOP_LEVEL, this, response);
+            return BaseListResponse.buildListResponse(response);
         }
         return null;
+    }
+    
+    private void addServices(int level, Service parentService, List<ResponseObject> response) {
+        if (parentService == null || parentService instanceof Dispatcher) {
+            return;
+        }
+        response.add(new ServiceResponse(level, parentService.getName(), parentService.getServiceState()));
+        if (parentService instanceof CompositeService) {
+            CompositeService compsite = (CompositeService) parentService;
+            List<Service> services = compsite.getServiceList();
+            for (Service service: services) {
+                addServices(level * 4, service, response);
+            }
+        }
     }
 }

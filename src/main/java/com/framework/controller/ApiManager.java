@@ -74,6 +74,7 @@ import com.framework.service.ComponentService;
 import com.framework.service.ServiceType;
 import com.framework.utils.Configuration;
 import com.framework.utils.NamedThreadFactory;
+import com.framework.utils.PropertiesUtils;
 import com.framework.utils.rmcontext.RMContext;
 
 public class ApiManager extends ComponentService implements HttpRequestHandler {
@@ -111,7 +112,7 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
                         conf.MAX_CONCURRENT_API_REQUEST, conf.API_THREAD_KEEP_ALIVE_TIME,
                         TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),
                         new NamedThreadFactory("ApiServer"));
-        apiPort = conf.API_PORT;
+        apiPort = Integer.valueOf(conf.API_PORT);
 
     }
 

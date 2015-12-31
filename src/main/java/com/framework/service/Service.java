@@ -22,9 +22,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.framework.response.ResponseObject;
 import com.framework.utils.Configuration;
 
-public interface Service extends Closeable {
+public interface Service extends Closeable, ResponseObject {
 
     public enum STATE {
 
