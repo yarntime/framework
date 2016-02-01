@@ -77,7 +77,7 @@ public class ResourceManager extends ComponentService implements MessageHandler<
     public static void main(String argv[]) throws IOException {
 
         identification = "identification";
-         
+        
         logger.info("resource manager is starting  with  identification " + identification + " ...");
         try {
             ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
