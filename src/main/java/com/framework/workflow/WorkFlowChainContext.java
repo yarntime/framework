@@ -1,10 +1,10 @@
 /**
+ *  
+ * WorkFlowChain context, every workflow chain contains one workflowchain context,
+ * the context contains the information required by all workflows in this workflow chain.
  * 
- * WorkFlow context, each workflow has its own workflow context information.
- * the context only contains the information required by this workflow.
- *
  * @author: zhangwei
- * @date: Mar 30, 2016
+ * @date:  Apr 1, 2016
  * @version: 1.0
  */
 package com.framework.workflow;
@@ -12,7 +12,7 @@ package com.framework.workflow;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkFlowContext {
+public class WorkFlowChainContext {
 
     private Map<String, Object> context = new HashMap<String, Object>();
 
