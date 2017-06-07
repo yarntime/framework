@@ -112,7 +112,7 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
                         conf.MAX_CONCURRENT_API_REQUEST, conf.API_THREAD_KEEP_ALIVE_TIME,
                         TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),
                         new NamedThreadFactory("ApiServer"));
-        apiPort = Integer.valueOf(conf.API_PORT);
+        apiPort = Integer.valueOf(PropertiesUtils.getConfig("api.service.port", "8080"));
 
     }
 
@@ -211,7 +211,6 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
             this.count = count;
         }
 
-        @Override
         public void run() {
             if (logger.isTraceEnabled())
                 logger.trace("ApiServer has handled " + count + " requests since started.");
@@ -240,7 +239,6 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
         }
     }
 
-    @Override
     public void handle(HttpRequest request, HttpResponse response, HttpContext context)
             throws HttpException, IOException {
         StringBuilder audit =

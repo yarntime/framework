@@ -18,10 +18,6 @@ public class PropertiesUtils {
 
     public static Properties configProperties;
 
-    static {
-        loadConfig();
-    }
-
     public static File findConfigFile(String path) {
 
         ClassLoader cl = PropertiesUtils.class.getClassLoader();
@@ -85,27 +81,17 @@ public class PropertiesUtils {
         Properties properties = new Properties();
         try {
             properties.load(input);
+            configProperties = properties;
         } catch (FileNotFoundException e) {
             logger.debug("failed to get " + CONFIG_FILE, e);
         } catch (IOException e) {
             logger.debug("failed to get " + CONFIG_FILE, e);
-        }
-        String type = properties.getProperty("execut.type");
-        if (type != null && type.equalsIgnoreCase("debug")) {
-            configProperties = properties;
-        } else {
-            String configPath = properties.getProperty("config.path.on.host");
-            Properties hostProperties = new Properties();
+        } finally {
             try {
-                File f = new File(configPath);
-                InputStream hostInput = new FileInputStream(f);
-                hostProperties.load(hostInput);
-            } catch (FileNotFoundException e) {
-                logger.debug("failed to get " + configPath, e);
+                input.close();
             } catch (IOException e) {
-                logger.debug("failed to get " + configPath, e);
+                e.printStackTrace();
             }
-            configProperties = hostProperties;
         }
     }
 

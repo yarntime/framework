@@ -105,7 +105,6 @@ public class ResourceManager extends ComponentService implements MessageHandler<
         return DispatcherType.Sync;
     }
 
-    @Override
     public Object handle(ServiceMsg message) {
 
         if (message instanceof QueryServiceMsg) {
