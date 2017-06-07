@@ -28,11 +28,14 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
+import com.framework.header.Api;
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -76,6 +79,9 @@ import com.framework.utils.Configuration;
 import com.framework.utils.NamedThreadFactory;
 import com.framework.utils.PropertiesUtils;
 import com.framework.utils.rmcontext.RMContext;
+import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
 
 public class ApiManager extends ComponentService implements HttpRequestHandler {
 
@@ -114,6 +120,15 @@ public class ApiManager extends ComponentService implements HttpRequestHandler {
                         new NamedThreadFactory("ApiServer"));
         apiPort = Integer.valueOf(PropertiesUtils.getConfig("api.service.port", "8080"));
 
+        Reflections reflections = new Reflections(ClasspathHelper.forPackage("com.framework"),
+                new TypeAnnotationsScanner());
+
+        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(Api.class);
+        for(Class clz: classes) {
+            Api at = (Api) clz.getAnnotation(Api.class);
+            String action = at.action();
+            messageClazzMap.put(action, clz);
+        }
     }
 
     @Override
